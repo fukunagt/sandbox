@@ -48,8 +48,8 @@ Review the requirements from the last section and then fill out the tables of th
 
 | Machine | Host name | Network Connection | IP Address | Subnet Mask | Default Gateway | DNS Server |
 | ---	| ---	| ---	| ---	| ---	| ---	| ---	|
-| 1	|	| Public:<br><br>Interconnect:<br><br>	|	|	|	|	|
-| 2	|	| Public:<br><br>Interconnect:<br><br>	|	|	|	|	|
+| 1	|	| Public:<br>Interconnect:<br>	|	|	|	|	|
+| 2	|	| Public:<br>Interconnect:<br>	|	|	|	|	|
 | 3	|	|                                     	|	|	|	|	|
 
 - Floating IP (FIP) address:
@@ -101,24 +101,24 @@ Installing SQL Server on Primary Server and Secondary Server
 1. Install and configure SQL Server 2017 as per requirement of the client/customer.
    1. Download the Microsoft SQL Server repository configuration file.
       https://packages.microsoft.com/config/rhel/7/mssql-server-2017.repo
-   2. Install MSSQL Server , Run the command
+   1. Install MSSQL Server , Run the command
       ```sh
       sudo yum install -y mssql-server
       ```
-   3. Set up password and Version
+   1. Set up password and Version
       ```sh
       sudo /opt/mssql/bin/mssql-conf setup
       ```
-   4. To check mssql status
+   1. To check mssql status
       ```sh
       systemctl status mssql-server
       ```
-   5. Allow port in running firewall
+   1. Allow port in running firewall
       ```sh
       sudo firewall-cmd --zone=public --add-port=1433/tcp -permanent
       sudo firewall-cmd -reload
       ```
-2. SQL Server command-line tools installation
+1. SQL Server command-line tools installation
    1. Run Command
       ```sh
       sudo curl -o /etc/yum.repos.d/msprod.repo https://packages.microsoft.com/config/rhel/7/prod.repo
@@ -146,13 +146,13 @@ Installing SQL Server on Primary Server and Secondary Server
 ### Install EXPRESSCLUSTER on the Primary & Standby Server (Machine 1&2)
 1. Install the EXPRESSCLUSTER Server RPM on all server(s) that constitute the cluster by following the procedures below.
    **Note**: Log in as root user when installing the EXPRESSCLUSTER Server RPM.
-2. Mount the installation CD-ROM.
-3. Run the rpm command to install the package file. The installation RPM varies depending on the products Navigate to the folder, /Linux/3.0/en/server, in the CD-ROM and run the following:
+1. Mount the installation CD-ROM.
+1. Run the rpm command to install the package file. The installation RPM varies depending on the products Navigate to the folder, /Linux/3.0/en/server, in the CD-ROM and run the following:
    ```sh
    rpm -i expresscls-[version].[architecture].rpm
    ```
-4. When the installation is completed, unmount the installation CD-ROM.
-5. License Registration: Log on to the master server as root user and run the following command.
+1. When the installation is completed, unmount the installation CD-ROM.
+1. License Registration: Log on to the master server as root user and run the following command.
    ```sh
    clplcnsc -i <filepath> -p <PRODUCT-ID>
    ```
@@ -164,66 +164,67 @@ Installing SQL Server on Primary Server and Secondary Server
 
 			**Note**: For registering the license from the command line refer to EXPRESSCLUSTER, Installation and Configuration Guide.
 
-2. Restart the Primary and Standby Servers (Machines 1 & 2)
+1. Restart the Primary and Standby Servers (Machines 1 & 2)
 <!--
    First restart the Primary Server and then restart the Standby Server
 -->
 ## iSCSI Target and Initiator configuration 
-1. iSCSI Target Configuration
-   Configure the storage to be used as the Target Server.
-2. ISCSI Target Configuration
-   Use the Primary Server and Secondary server as the Initiator 1 and 2 respectively
+### iSCSI Target Configuration
+Configure the storage to be used as the Target Server.
+
+### iSCSI Target Configuration
+Use the Primary Server and Secondary server as the Initiator 1 and 2 respectively
 
 ## Base Cluster Setup
 This chapter describes the steps to create a cluster using EXPRESSCLUSTER Manager running on the Management Console/ Client (Machine 3).
 Verify JRE v.1.5.0.6 or newer is installed on the Management Console/Test Client (Machine 3). If necessary, install JRE by performing the following steps:
 1. Install Java Runtime Environment (JRE)
    1. Run jre-1_5_0 <build and platform version>.exe (a compatible JRE distribution can be found in the jre folder on the EXPRESSCLUSTER CD).
-   2. On the License Agreement screen, verify the default Typical setup option button is selected. Click Accept.
-   3. On the Installation Completed screen, click Finish.
-2. Start the cluster manager
+   1. On the License Agreement screen, verify the default Typical setup option button is selected. Click Accept.
+   1. On the Installation Completed screen, click Finish.
+1. Start the cluster manager
    The cluster manager is started by accessing port 29003 from the web browser of any of the nodes (Machine1 or Machine 2). Example: http://localhost:29003
-3. Create a cluster
+1. Create a cluster
 For all of the steps below, refer to Table 1 for the IP addresses and server names.
    1. When the cluster manager is opened for the first time, a pop up will appear which has three options. Click on "Start cluster generation wizard".
-   2. A new window opens where the name of the cluster can be specified and cluster generation begins.
-   3. Type a cluster name. Example: cluster
-   4. Type the Management IP address and click Next.
-   5. In the next window, the server on which the cluster creation has started is already added. Click Add to add another server to this cluster.
-   6. Provide the hostname or the IP address of the second server and click OK.
-   7. Now both servers will appear on the list. Click Next.
-   8. EXPRESSCLUSTER X automatically detects the IP addresses of the servers, which can be seen on this screen. Select the network to be used for the Heartbeat path as type Kernel Mode. If Mirroring is also occurring through the same network cards, then specify the Mirror connect settings in the respective network fields. Click the dropdown button on the "Mirror Disk Connect" and select the connect number (e.g.: mdc1). Click Next.
-   9. For this guide, the NP resolutions resources are not configured. Click Next.
-4. Create a failover group
+   1. A new window opens where the name of the cluster can be specified and cluster generation begins.
+   1. Type a cluster name. Example: cluster
+   1. Type the Management IP address and click Next.
+   1. In the next window, the server on which the cluster creation has started is already added. Click Add to add another server to this cluster.
+   1. Provide the hostname or the IP address of the second server and click OK.
+   1. Now both servers will appear on the list. Click Next.
+   1. EXPRESSCLUSTER X automatically detects the IP addresses of the servers, which can be seen on this screen. Select the network to be used for the Heartbeat path as type Kernel Mode. If Mirroring is also occurring through the same network cards, then specify the Mirror connect settings in the respective network fields. Click the dropdown button on the "Mirror Disk Connect" and select the connect number (e.g.: mdc1). Click Next.
+   1. For this guide, the NP resolutions resources are not configured. Click Next.
+1. Create a failover group
    For all of the steps below, refer to Table 1 for the IP addresses and server names. 
    1. Now the cluster generation wizard is in the groups section.
-   2. Click Add to add a group.
-   3. In the newly opened window, select the type of the group as Failover and give this group a name (e.g.:Failover_MSSQL ) and click Next and then click next.
-   4. Leave the default options for the group attribute settings and click Next
-5. Create floating IP and disk resource
+   1. Click Add to add a group.
+   1. In the newly opened window, select the type of the group as Failover and give this group a name (e.g.:Failover_MSSQL ) and click Next and then click next.
+   1. Leave the default options for the group attribute settings and click Next
+1. Create floating IP and disk resource
    1. Now in the group resources section of the Cluster generation wizard.
-   2. Click on Add to add a resource.
-   3. In the next window, to add a Floating IP Resource (FIP) select "floating ip resource" from the drop down list. Click Next.
+   1. Click on Add to add a resource.
+   1. In the next window, to add a Floating IP Resource (FIP) select "floating ip resource" from the drop down list. Click Next.
    4. By default, the FIP resource is not dependent on any other resources. Follow the default dependency and click Next.
-   5. Use the default options and click Next.
-   6. Provide a floating IP address that is not used by any other network element. Click Finish.
-   7. Again click Add to add a Disk Resource.
-   8. In the next window, to add a Disk Resource. Select "Disk resource" from the drop down list. Click Next.
-   9. Again, follow the default dependency. Click Next.
-  10. Use the default options and click Next.
-  11. Now in Common Tab Select Disk type as disk , In file system select file system type, in Device Name Select the UUID of Target disk which will be used as data partition, in Mount Point give the name of mount point that will be used to access target disk.
-  12. Click Finish.
-  13. To add FIP monitor, Right click on "Monitors" in web manager.
-  14. Select "Add monitor resource"
-  15.  Select FIP monitor from type drop down and give name to the monitor resource (eg. fipw_monitor) and click Next.
-  16. In the Target resource field. Click on Browse. Select the FIP resource and click OK. Click Next.
-  17. In the Recovery target field, click Browse. Now click on Failover group and click OK.
-  18. Click Finish to add the FIP monitor resource.
-6. Upload the cluster configuration and initialize the cluster
+   1. Use the default options and click Next.
+   1. Provide a floating IP address that is not used by any other network element. Click Finish.
+   1. Again click Add to add a Disk Resource.
+   1. In the next window, to add a Disk Resource. Select "Disk resource" from the drop down list. Click Next.
+   1. Again, follow the default dependency. Click Next.
+   1. Use the default options and click Next.
+   1. Now in Common Tab Select Disk type as disk , In file system select file system type, in Device Name Select the UUID of Target disk which will be used as data partition, in Mount Point give the name of mount point that will be used to access target disk.
+   1. Click Finish.
+   1. To add FIP monitor, Right click on "Monitors" in web manager.
+   1. Select "Add monitor resource"
+   1.  Select FIP monitor from type drop down and give name to the monitor resource (eg. fipw_monitor) and click Next.
+   1. In the Target resource field. Click on Browse. Select the FIP resource and click OK. Click Next.
+   1. In the Recovery target field, click Browse. Now click on Failover group and click OK.
+   1. Click Finish to add the FIP monitor resource.
+1. Upload the cluster configuration and initialize the cluster
    1. In the Cluster Manager window, to apply the configuration, click the File menu and then apply the Configuration File.
-   2. After the upload is completed, change the mode of the Cluster Manager to Operation Mode.
-   3. Restart Cluster Manager and start the cluster. Click on the Service menu and then click on Start Cluster.
-   4. In the Cluster Manager window, all icons in the tree view should now be green
+   1. After the upload is completed, change the mode of the Cluster Manager to Operation Mode.
+   1. Restart Cluster Manager and start the cluster. Click on the Service menu and then click on Start Cluster.
+   1. In the Cluster Manager window, all icons in the tree view should now be green
 <!--
 [Figure 1](fig1.jpg) Live cluster
 -->
@@ -245,23 +246,22 @@ For all of the steps below, refer to Table 1 for the IP addresses and server nam
    ```
    To configure MSSQL Database server cluster we will configure its service with EXPRESSCLUSTER. Change the default path of the database to a path on the data partition.
 2. Change the default master database file directory location
-
 		Use mssql-conf to change the default master database directory
-
-			sudo /opt/mssql/bin/mssql-conf set filelocation.masterdatafile /mssql/data/master.mdf
-			sudo /opt/mssql/bin/mssql-conf set filelocation.masterlogfile /mssql/data/mastlog.ldf
-
+   ```sh
+   sudo /opt/mssql/bin/mssql-conf set filelocation.masterdatafile /mssql/data/master.mdf
+   sudo /opt/mssql/bin/mssql-conf set filelocation.masterlogfile /mssql/data/mastlog.ldf
+   ```
 3. Move the master.mdf and master.ldf
    1. Stop the MSSQL Server Service
-
-				sudo systemctl stop mssql-server
-				sudo mv /var/opt/mssql/data/master.mdf /mssql/data/master.mdf
-				sudo mv /var/opt/mssql/data/mastlog.ldf /mssql/data/mastlog.ldf
-
+      ```sh
+      sudo systemctl stop mssql-server
+      sudo mv /var/opt/mssql/data/master.mdf /mssql/data/master.mdf
+      sudo mv /var/opt/mssql/data/mastlog.ldf /mssql/data/mastlog.ldf
+      ```
    2. Start the MSSQL Service
-
-				sudo systemctl start mssql-server
-
+      ```sh
+      sudo systemctl start mssql-server
+      ```
    4. Cluster Configuration Setup
 		Adding a exec resource
 
@@ -445,6 +445,7 @@ Floating IP (FIP) address:
 Web Management Console FIP:      (1) 10.0.7.125
 
 **Table 3: System Logins and Passwords**
+
 |       | Login | Password |
 |---    | ---   |---       |
 | Machine 1 Administrator | root | admin1234 |
