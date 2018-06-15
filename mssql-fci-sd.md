@@ -3,7 +3,7 @@
 This guide describes a way to build two nodes (active standby) SQL Server Always On FCI (Failover Cluster Instances) configuration by EXPRESSCLUSTER X.
 
 ## System Requirements and Planning
-### Versions used on verification
+### Versions Used on Verification
 - SQL Server 2017 on Linux
   - mssql-server-14.0.3026.27-2.x86_64
   - mssql-server-14.0.3006.16-3.x86_64
@@ -156,19 +156,17 @@ Installing SQL Server on Primary Server and Secondary Server
    ```sh
    clplcnsc -i <filepath> -p <PRODUCT-ID>
    ```
-			When the command is successfully executed, the message "Command succeeded." is displayed in the console
-
-			**Note**: Here, specify the filepath to the license file by the -i option & the productID by the -p option.
-
-			For Base License: Enter the product ID as BASE33.  Here 33 is the EC version & this number will vary as per the EC deployed. Example for EC2.1 version, command param would become BASE21. The Base license needs to be applied on only one server
-
-			**Note**: For registering the license from the command line refer to EXPRESSCLUSTER, Installation and Configuration Guide.
-
+   When the command is successfully executed, the message "Command succeeded." is displayed in the console
+   **Note**: Here, specify the filepath to the license file by the -i option & the productID by the -p option.
+<!--   
+   For Base License: Enter the product ID as BASE33.  Here 33 is the EC version & this number will vary as per the EC deployed. Example for EC2.1 version, command param would become BASE21. The Base license needs to be applied on only one server
+-->
+   **Note**: For registering the license from the command line refer to EXPRESSCLUSTER, Installation and Configuration Guide.
 1. Restart the Primary and Standby Servers (Machines 1 & 2)
 <!--
    First restart the Primary Server and then restart the Standby Server
 -->
-## iSCSI Target and Initiator configuration 
+## iSCSI Target and Initiator Configuration 
 ### iSCSI Target Configuration
 Configure the storage to be used as the Target Server.
 
@@ -236,34 +234,34 @@ For all of the steps below, refer to Table 1 for the IP addresses and server nam
    sudo chown mssql:mssql /mssql/data/
    ```
    /mssql/data is mount point of the shared storage.
-   2. Use mssql-conf to change the default data directory with the set command
+   1. Use mssql-conf to change the default data directory with the set command
    ```sh
    sudo /opt/mssql/bin/mssql-conf set filelocation.defaultdatadir /mssql/data
    ```
-   3. Restart the SQL Server service
+   1. Restart the SQL Server service
    ```sh
    sudo systemctl restart mssql-server
    ```
    To configure MSSQL Database server cluster we will configure its service with EXPRESSCLUSTER. Change the default path of the database to a path on the data partition.
-2. Change the default master database file directory location
-		Use mssql-conf to change the default master database directory
+1. Change the default master database file directory location
+   Use mssql-conf to change the default master database directory
    ```sh
    sudo /opt/mssql/bin/mssql-conf set filelocation.masterdatafile /mssql/data/master.mdf
    sudo /opt/mssql/bin/mssql-conf set filelocation.masterlogfile /mssql/data/mastlog.ldf
    ```
-3. Move the master.mdf and master.ldf
+1. Move the master.mdf and master.ldf
    1. Stop the MSSQL Server Service
       ```sh
       sudo systemctl stop mssql-server
       sudo mv /var/opt/mssql/data/master.mdf /mssql/data/master.mdf
       sudo mv /var/opt/mssql/data/mastlog.ldf /mssql/data/mastlog.ldf
       ```
-   2. Start the MSSQL Service
+   1. Start the MSSQL Service
       ```sh
       sudo systemctl start mssql-server
       ```
-   4. Cluster Configuration Setup
-		Adding a exec resource
+   1. Cluster Configuration Setup
+Adding a exec resource
 
 		1. On Cluster Builder (Config Mode), in the tree view, under Groups, right-click failover and then click Add Resource.
 		2. In the "Group Resource Definitions" window, for Type, select execute resource from the pull-down box. For Name, use the default (exec). Click Next.
@@ -305,44 +303,38 @@ For all of the steps below, refer to Table 1 for the IP addresses and server nam
 		`10.0.7.118` is IP address of iSCSI target server in the above scripts.
 -->
 ## Final Deployment in a LAN Environment
+This chapter describes the steps to verify a LAN infrastructure and to deploy the cluster configuration on the Primary and the Secondary servers
 
-	This chapter describes the steps to verify a LAN infrastructure and to deploy the cluster configuration on the Primary and the Secondary servers
-
-	1. Configure and verify the connection between the Primary and Standby servers to meet the following requirements
-		- Two logically separate IP protocol networks: one for the Public Network and one for the Cluster Interconnect.
-		- The Public Network must be a single IP subnet that spans the Primary and Standby servers to enable transparent redirection of the client connection to a single floating server IP address. 
-		- The Cluster Interconnect should be a single IP subnet that spans the Primary and Standby servers to simplify system setup.
-		- A proper IP network between client and server machines on the Public Network on both the Primary and Standby servers.
-	2. Make sure that the Primary server is in active mode with a fully functional target application and the Standby Server is running in passive mode.
-	3. Ping both the Primary and Secondary servers from the test system and make sure the Secondary server has all the target services in manual and stopped mode.
-	4. Start the cluster and try accessing the application from the Primary server. Then move the cluster to the Secondary server. Check the availability of the application on the Secondary server after failover.
-	5. Deployment is completed.
+1. Configure and verify the connection between the Primary and Standby servers to meet the following requirements
+   - Two logically separate IP protocol networks: one for the Public Network and one for the Cluster Interconnect.
+   - The Public Network must be a single IP subnet that spans the Primary and Standby servers to enable transparent redirection of the client connection to a single floating server IP address. 
+   - The Cluster Interconnect should be a single IP subnet that spans the Primary and Standby servers to simplify system setup.
+   - A proper IP network between client and server machines on the Public Network on both the Primary and Standby servers.
+1. Make sure that the Primary server is in active mode with a fully functional target application and the Standby Server is running in passive mode.
+1. Ping both the Primary and Secondary servers from the test system and make sure the Secondary server has all the target services in manual and stopped mode.
+1. Start the cluster and try accessing the application from the Primary server. Then move the cluster to the Secondary server. Check the availability of the application on the Secondary server after failover.
+1. Deployment is completed.
 
 ## Common Maintenance Tasks
 This chapter describes how to perform common EXPRESSCLUSTER maintenance tasks using the EXPRESSCLUSTER Manager.
 1. Start Cluster Manager
-
-		There are two methods to start/access Cluster Manager through a supported Java enabled web browser. The first method is through the IP address of the physical server running the cluster management server application. The second method is through the floating IP address for a cluster management server within a cluster.
-
-		1. The first method is typically used during initial cluster setup before the cluster management server floating IP address becomes effective
-
-			1. Start Internet Explorer or another supported Java enabled Web browser.
-			2. Type the URL with the IP address of the active physical server followed by a colon and the cluster management server port number.
+   There are two methods to start/access Cluster Manager through a supported Java enabled web browser. The first method is through the IP address of the physical server running the cluster management server application. The second method is through the floating IP address for a cluster management server within a cluster.
+1. The first method is typically used during initial cluster setup before the cluster management server floating IP address becomes effective
+   1. Start Internet Explorer or another supported Java enabled Web browser.
+   1. Type the URL with the IP address of the active physical server followed by a colon and the cluster management server port number.
 
 			Example:
 			Assuming that the cluster management server is running on an active physical server with an IP address (e.g.: 10.1.1.1) on port number 29003, enter http://10.1.1.1:29003/
 
-		2. The second method is more convenient and is typically used after initial cluster setup
-
-			1. Start Internet Explorer or another supported Java enabled Web browser.
-			2. Type the URL with the cluster management server floating IP address followed by a colon and the cluster management server port number.
+   1. The second method is more convenient and is typically used after initial cluster setup
+      1. Start Internet Explorer or another supported Java enabled Web browser.
+      2. Type the URL with the cluster management server floating IP address followed by a colon and the cluster management server port number.
 
 			Example:
 			Assuming that the cluster management server is running with a floating IP address (10.1.1.3) on port 29003, enter http://10.1.1.3:29003/.
 
-	2. Reboot/shutdown one or all servers
-
-		1. Reboot all servers
+   1. Reboot/shutdown one or all servers
+1. Reboot all servers
 
 			1. Start Cluster Manager. (Chapter 10, Section 1)
 			2. On the left hand side, right click on Cluster name and choose "Reboot".
