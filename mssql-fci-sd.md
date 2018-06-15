@@ -261,14 +261,13 @@ For all of the steps below, refer to Table 1 for the IP addresses and server nam
       sudo systemctl start mssql-server
       ```
    1. Cluster Configuration Setup
-Adding a exec resource
-
-		1. On Cluster Builder (Config Mode), in the tree view, under Groups, right-click failover and then click Add Resource.
-		2. In the "Group Resource Definitions" window, for Type, select execute resource from the pull-down box. For Name, use the default (exec). Click Next.
-		3. On next window, make sure "Follow the default dependency" check box is checked and click NEXT.
-		4. On next window "Recovery Operation at Deactivation Failure Detection", make the final action as "No Operation (deactivate next resource)" and click NEXT.
-		5. In the next window edit the start.sh file and replace the source with source code shown below.
-		6. In the same window select the stop.sh file and edit the stop.sh file and replace the source with scripts shown as below and click FINISH.
+      Adding a exec resource
+      1. On Cluster Builder (Config Mode), in the tree view, under Groups, right-click failover and then click Add Resource.
+      2. In the "Group Resource Definitions" window, for Type, select execute resource from the pull-down box. For Name, use the default (exec). Click Next.
+      3. On next window, make sure "Follow the default dependency" check box is checked and click NEXT.
+      4. On next window "Recovery Operation at Deactivation Failure Detection", make the final action as "No Operation (deactivate next resource)" and click NEXT.
+      5. In the next window edit the start.sh file and replace the source with source code shown below.
+      6. In the same window select the stop.sh file and edit the stop.sh file and replace the source with scripts shown as below and click FINISH.
 
 			Start Script
 
@@ -279,6 +278,10 @@ Adding a exec resource
 
 				#/bin/bash
 				sudo systemctl stop mssql-server
+      Adding a SQL Server monitor resource
+      1. 
+
+
 <!--
 		Adding a Service resource
 
@@ -304,7 +307,6 @@ Adding a exec resource
 -->
 ## Final Deployment in a LAN Environment
 This chapter describes the steps to verify a LAN infrastructure and to deploy the cluster configuration on the Primary and the Secondary servers
-
 1. Configure and verify the connection between the Primary and Standby servers to meet the following requirements
    - Two logically separate IP protocol networks: one for the Public Network and one for the Cluster Interconnect.
    - The Public Network must be a single IP subnet that spans the Primary and Standby servers to enable transparent redirection of the client connection to a single floating server IP address. 
