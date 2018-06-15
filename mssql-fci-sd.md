@@ -244,7 +244,6 @@ For all of the steps below, refer to Table 1 for the IP addresses and server nam
    ```
    To configure MSSQL Database server cluster we will configure its service with EXPRESSCLUSTER. Change the default path of the database to a path on the data partition.
 1. Change the default master database file directory location
-   Use mssql-conf to change the default master database directory
    ```sh
    sudo /opt/mssql/bin/mssql-conf set filelocation.masterdatafile /mssql/data/master.mdf
    sudo /opt/mssql/bin/mssql-conf set filelocation.masterlogfile /mssql/data/mastlog.ldf
