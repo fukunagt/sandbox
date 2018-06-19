@@ -118,6 +118,13 @@ Installing SQL Server on Primary Server and Secondary Server
       sudo firewall-cmd --zone=public --add-port=1433/tcp -permanent
       sudo firewall-cmd -reload
       ```
+   1. Check the GID and UID of mssql. 
+      ```sh
+      cat /etc/passwd
+       :
+      mssql:x:989:984::/var/opt/mssql:/bin/bash
+      ```
+      - If GID and UID are different on servers, modify them with groupmod and usermod command.
 1. SQL Server command-line tools installation
    1. Run Command
       ```sh
@@ -147,7 +154,7 @@ Installing SQL Server on Primary Server and Secondary Server
 1. Install the EXPRESSCLUSTER Server RPM on all server(s) that constitute the cluster by following the procedures below.
    **Note**: Log in as root user when installing the EXPRESSCLUSTER Server RPM.
 1. Mount the installation CD-ROM.
-1. Run the rpm command to install the package file. The installation RPM varies depending on the products Navigate to the folder, /Linux/3.0/en/server, in the CD-ROM and run the following:
+1. Run the rpm command to install the package file. The installation RPM varies depending on the products Navigate to the folder, /Linux/<version>/en/server, in the CD-ROM and run the following:
    ```sh
    rpm -i expresscls-[version].[architecture].rpm
    ```
