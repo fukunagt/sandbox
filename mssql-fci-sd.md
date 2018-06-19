@@ -292,6 +292,7 @@ For all of the steps below, refer to Table 1 for the IP addresses and server nam
          - ODBC Driver Name: ODBC Driver 17 for SQL Server 
       1. Click "Browse", select failover group and click "OK".
       1. Click "Finish".
+   1. Upload the cluster configuration.
 <!--
 		Adding a Service resource
 
@@ -334,95 +335,71 @@ This chapter describes how to perform common EXPRESSCLUSTER maintenance tasks us
 1. The first method is typically used during initial cluster setup before the cluster management server floating IP address becomes effective
    1. Start Internet Explorer or another supported Java enabled Web browser.
    1. Type the URL with the IP address of the active physical server followed by a colon and the cluster management server port number.
-
-			Example:
-			Assuming that the cluster management server is running on an active physical server with an IP address (e.g.: 10.1.1.1) on port number 29003, enter http://10.1.1.1:29003/
-
+      - Example:
+        Assuming that the cluster management server is running on an active physical server with an IP address (e.g.: 10.1.1.1) on port number 29003, enter http://10.1.1.1:29003/
    1. The second method is more convenient and is typically used after initial cluster setup
       1. Start Internet Explorer or another supported Java enabled Web browser.
       2. Type the URL with the cluster management server floating IP address followed by a colon and the cluster management server port number.
-
-			Example:
-			Assuming that the cluster management server is running with a floating IP address (10.1.1.3) on port 29003, enter http://10.1.1.3:29003/.
-
+         - Example:
+	   Assuming that the cluster management server is running with a floating IP address (10.1.1.3) on port 29003, enter http://10.1.1.3:29003/.
    1. Reboot/shutdown one or all servers
 1. Reboot all servers
-
-			1. Start Cluster Manager. (Chapter 10, Section 1)
-			2. On the left hand side, right click on Cluster name and choose "Reboot".
-
-		2. Shutdown all servers
-
-			- Same as "Reboot all servers", except in step 2 click Shutdown.
-
-		3. Shutdown one server
-
-			1. Start Cluster Manager.( Chapter 10, Section 1)
-			2. Right-click the %machine name% and click Shutdown.
-			3. In the Confirmation window, click OK.
-			4. Right-click the %cluster name% and click Reboot.
-			5. In the Confirmation window, click OK.
-
-	3. Startup/stop/move failover groups
-
-		1. Start Cluster Manager.( Chapter 10, Section 1)
-		2. Under Groups, right-click the Failover group and then click Start/Stop/Move.
-		3. In the Confirmation window, click OK.
-
-	4. Isolate a server for maintenance
-
-		1. Start Cluster Manager. (Chapter 10, Section 1)
-		2. In the Cluster Manager window, change to Config Mode.
-		3. Click the %cluster name% and then right-click Properties.
-		4. Click the Auto Recovery tab. To manually return the server to the cluster, select Off for the Auto Return option. Otherwise, leave it set to On for automatic recovery when the server is turned back on. Click OK.
-		5. If a change was made, upload the configuration file.
-		6. Shut down the server to be isolated for maintenance.
-		7. The server is now isolated and ready for maintenance tasks.
-
-	5. Return an isolated server to the cluster
-
-		Start with the server that was isolated in the steps listed above ("Isolate a server for maintenance").
-
-		1. Automatic Recovery
-
-			1. Turn the machine back on.
-			2. Recovery starts automatically to return the server to the cluster.
-
-		2. Manual Recovery
-
-			1. Turn the machine back on and wait until the boot process has completed.
-			2. Start Cluster Manager.
-			3. In the Cluster Manager window, right click the name of the server which was isolated and select Recover. The server which was isolated will return to the cluster.
+   1. Start Cluster Manager. (Chapter 10, Section 1)
+   2. On the left hand side, right click on Cluster name and choose "Reboot".
+2. Shutdown all servers
+   - Same as "Reboot all servers", except in step 2 click Shutdown.
+3. Shutdown one server
+   1. Start Cluster Manager.( Chapter 10, Section 1)
+   2. Right-click the %machine name% and click Shutdown.
+   3. In the Confirmation window, click OK.
+   4. Right-click the %cluster name% and click Reboot.
+   5. In the Confirmation window, click OK.
+3. Startup/stop/move failover groups
+   1. Start Cluster Manager.( Chapter 10, Section 1)
+   2. Under Groups, right-click the Failover group and then click Start/Stop/Move.
+   3. In the Confirmation window, click OK.
+4. Isolate a server for maintenance
+   1. Start Cluster Manager. (Chapter 10, Section 1)
+   2. In the Cluster Manager window, change to Config Mode.
+   3. Click the %cluster name% and then right-click Properties.
+   4. Click the Auto Recovery tab. To manually return the server to the cluster, select Off for the Auto Return option. Otherwise, leave it set to On for automatic recovery when the server is turned back on. Click OK.
+   5. If a change was made, upload the configuration file.
+   6. Shut down the server to be isolated for maintenance.
+   7. The server is now isolated and ready for maintenance tasks.
+5. Return an isolated server to the cluster
+   Start with the server that was isolated in the steps listed above ("Isolate a server for maintenance").
+   1. Automatic Recovery
+      1. Turn the machine back on.
+      2. Recovery starts automatically to return the server to the cluster.
+   2. Manual Recovery
+      1. Turn the machine back on and wait until the boot process has completed.
+      2. Start Cluster Manager.
+      3. In the Cluster Manager window, right click the name of the server which was isolated and select Recover. The server which was isolated will return to the cluster.
 
 ## Appendix A: EXPRESSCLUSTER X Server Un-installation
-
-	Follow the steps below to uninstall EXPRESSCLUSTER from each of the server systems.
-	
-	1. On the Management Console/Client, in Cluster Manger (Operation Mode), under Groups, right-click Failover and then click STOP.
-	2. Close Cluster Manger window.
-	3. On the server system that you are starting the uninstall process for EXPRESSCLUSTER, stop all EXPRESSCLUSTER services. To stop all services, follow the steps below
-
-		1. On the terminal stop the following services by running the below commands
-
-				service clusterpro stop
-				service clusterpro_md stop
-				service clusterpro_evt stop
-				service clusterpro_trn stop
-				service clusterpro_alertsync stop
-				service clusterpro_webmgr stop
-
-		2. On the terminal run the below specified command:
-
-				rpm -e expresscls-[version].[architecture].rpm
-
-		3. Restart the machine.
-
-	This completes the uninstall process for an individual server system.
-
-	**Note**: You must be logged on as a root or an account with administrator privileges to uninstall Express Cluster Server.
-
-	If a shared disk is used, unplug all disk cables connected to the server after un-installation is completed.
-
+Follow the steps below to uninstall EXPRESSCLUSTER from each of the server systems.
+1. On the Management Console/Client, in Cluster Manger (Operation Mode), under Groups, right-click Failover and then click STOP.
+2. Close Cluster Manger window.
+3. On the server system that you are starting the uninstall process for EXPRESSCLUSTER, stop all EXPRESSCLUSTER services. To stop all services, follow the steps below
+   1. On the terminal stop the following services by running the below commands
+   ```sh
+   service clusterpro stop
+   service clusterpro_md stop
+   service clusterpro_evt stop
+   service clusterpro_trn stop
+   service clusterpro_alertsync stop
+   service clusterpro_webmgr stop
+   ```
+   2. On the terminal run the below specified command:
+   ```sh
+   rpm -e expresscls
+   ```
+   3. Restart the machine.
+<!--
+      This completes the uninstall process for an individual server system.
+      **Note**: You must be logged on as a root or an account with administrator privileges to uninstall Express Cluster Server.
+      If a shared disk is used, unplug all disk cables connected to the server after un-installation is completed.
+-->
 ### Appendix B: Example System Planning Worksheet
 - Machine 1 Primary Server
 - Machine 2 Standby Server
