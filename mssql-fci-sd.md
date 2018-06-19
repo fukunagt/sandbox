@@ -255,32 +255,43 @@ For all of the steps below, refer to Table 1 for the IP addresses and server nam
       sudo mv /var/opt/mssql/data/master.mdf /mssql/data/master.mdf
       sudo mv /var/opt/mssql/data/mastlog.ldf /mssql/data/mastlog.ldf
       ```
+<!--      
    1. Start the MSSQL Service
       ```sh
       sudo systemctl start mssql-server
       ```
-   1. Cluster Configuration Setup
-      Adding a exec resource
+-->
+   1. Add an exec resource
       1. On Cluster Builder (Config Mode), in the tree view, under Groups, right-click failover and then click Add Resource.
       2. In the "Group Resource Definitions" window, for Type, select execute resource from the pull-down box. For Name, use the default (exec). Click Next.
       3. On next window, make sure "Follow the default dependency" check box is checked and click NEXT.
       4. On next window "Recovery Operation at Deactivation Failure Detection", make the final action as "No Operation (deactivate next resource)" and click NEXT.
       5. In the next window edit the start.sh file and replace the source with source code shown below.
       6. In the same window select the stop.sh file and edit the stop.sh file and replace the source with scripts shown as below and click FINISH.
-
-			Start Script
-
-				#/bin/bash
-				sudo systemctl start mssql-server
-
-			Stop Script
-
-				#/bin/bash
-				sudo systemctl stop mssql-server
-      Adding a SQL Server monitor resource
-      1. 
-
-
+         - Start Script
+           ```sh
+           #/bin/bash
+           sudo systemctl start mssql-server
+           ```
+         - Stop Script
+           ```sh
+           #/bin/bash
+           sudo systemctl stop mssql-server
+           ```
+   1. Add a SQL Server monitor resource
+      1. On Cluster Builder (Config Mode), in the tree view, right-click Monitors and then click Add Monitor Resource.
+      1. In the "Monitor Resource Definition" window, click **"Get License Info"**, for Type, select **"SQL Server monitor"** from the pull-down box. For Name, use the default (sqlserverw). Click Next.
+      1. On next window, click "Browse", select **"exec" resource** and click "OK". Click "Next".
+      1. Set the following parameters and click "Next".
+         - Monitor Level: Level 2 (monitoring by update/select)
+         - Database Name: testdb
+         - Server Name: localhost
+         - User Name: SA
+         - Password: Your Password
+         - Monitor Table Name: sqlwatch
+         - ODBC Driver Name: ODBC Driver 17 for SQL Server 
+      1. Click "Browse", select failover group and click "OK".
+      1. Click "Finish".
 <!--
 		Adding a Service resource
 
